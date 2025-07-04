@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'corsheaders',
+    'admin_panel',
 
 ]
 
@@ -140,7 +141,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
+
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=150),
@@ -152,3 +158,5 @@ SIMPLE_JWT = {
 }
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = 'users.User' 
