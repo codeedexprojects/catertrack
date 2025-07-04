@@ -1,0 +1,11 @@
+from django.urls import path
+from admin_panel.views import *
+
+urlpatterns =[
+    path('login/', AdminLoginView.as_view(), name='admin-login'),#admin login
+    path('base-fares/', BaseFareCreateView.as_view(), name='base-fare-create'), #base fare create
+    path('list-base-fares/', BaseFareListView.as_view(), name='base-fare-list'), #base fare list
+    path('base-fares/update/<str:fare_type>/', BaseFareUpdateView.as_view(), name='base-fare-update'), #base fare update
+
+
+]

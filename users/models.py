@@ -49,10 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
-    mobile_number = models.IntegerField(null=True, unique=True)
+    mobile_number = models.CharField(max_length=15,null=True, unique=True)
 
     groups = models.ManyToManyField(Group, related_name="custom_user_groups", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="custom_user_permissions", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = CustomUserManager()
 
@@ -61,3 +62,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.email} ({self.role})"
+
+
+class StaffDetails(models.Model):
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="staff_details")
+    alternate_mobile_number = models.CharField(max_length=15, blank=True, null=True)
+    address = models.TextField()
+    district = models.CharField(max_length=50)
+    place = models.CharField(max_length=100)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  
+    height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  
+    profile_image = models.ImageField(upload_to='staff/profile_images/', blank=True, null=True)
+    pant = models.BooleanField(default=False)
+    shoe = models.BooleanField(default=False)
+    grooming = models.BooleanField(default=False)
+    experienced = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Staff Details: {self.user.email}"
