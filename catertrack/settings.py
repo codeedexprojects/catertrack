@@ -160,3 +160,18 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User' 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'catershub$caterdb',
+#         'USER': 'catershub',
+#         'PASSWORD':'admin@123',
+#         'HOST':'catershub.mysql.pythonanywhere-services.com',
+#         'PORT':'3306',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#             'use_unicode': True,
+#         },
+#     }
+# }
