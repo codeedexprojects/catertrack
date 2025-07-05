@@ -111,3 +111,58 @@ class DailyWage(models.Model):
 
     def __str__(self):
         return f"{self.user.user_name or self.user.email} - {self.date} - ₹{self.total_wage}"
+
+WORK_TYPE_CHOICES = [
+    ('wedding', 'Wedding'),
+    ('corporate', 'Corporate Event'),
+    ('private', 'Private Party'),
+    ('others', 'Others'),
+]
+
+WORK_STATUS_CHOICES = [
+    ('pending', 'Pending'),
+    ('in_progress', 'In Progress'),
+    ('completed', 'Completed'),
+    ('cancelled', 'Cancelled'),
+]
+
+class CateringWork(models.Model):
+    customer_name = models.CharField(max_length=100)
+    customer_mobile = models.CharField(max_length=15)
+    address = models.TextField()
+    place = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+
+    date = models.DateField()
+    time = models.TimeField()
+
+    work_type = models.CharField(max_length=30, choices=WORK_TYPE_CHOICES)
+    status = models.CharField(max_length=20, choices=WORK_STATUS_CHOICES, default='pending')
+
+    no_of_boys_needed = models.PositiveIntegerField(default=0)
+    attendees = models.PositiveIntegerField(default=0)
+
+    assigned_supervisor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'role__in': ['supervisor', 'vice_supervisor', 'subadmin']},
+        related_name='supervised_works'
+    )
+
+    assigned_boys = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        limit_choices_to={'role': 'boys'},
+        related_name='assigned_works'
+    )
+    location_url = models.URLField(max_length=500,blank=True,null=True, help_text="Paste Google Maps link of the venue location")
+    remarks = models.TextField(blank=True, null=True)
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.customer_name} - {self.work_type} on {self.date}"
