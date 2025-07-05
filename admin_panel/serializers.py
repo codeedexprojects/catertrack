@@ -64,3 +64,17 @@ class DailyWagePatchSerializer(serializers.ModelSerializer):
         instance.total_wage = instance.calculate_total()
         instance.save()
         return instance
+    
+class CateringWorkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CateringWork
+        fields = [
+            'id', 'customer_name', 'customer_mobile',
+            'address', 'place', 'district',
+            'date', 'time', 'work_type', 'status',
+            'no_of_boys_needed', 'attendees',
+            'assigned_supervisor', 'assigned_boys',
+            'remarks', 'payment_amount', 'location_url',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']

@@ -13,6 +13,7 @@ urlpatterns =[
     path('boy-rating/<int:pk>/update/', BoyRatingPartialUpdateView.as_view(), name='boy-rating-patch'),
     path('daily-wage/create/', DailyWageCreateView.as_view(), name='daily-wage-create'),
     path('daily-wage/<int:pk>/update/', DailyWagePartialUpdateView.as_view(), name='daily-wage-patch'),
-
+    path('catering-work/create/', CateringWorkCreateView.as_view(), name='catering-work-create'),
+    path('catering-work/<int:pk>/update/', CateringWorkUpdateView.as_view(), name='catering-work-update'),
 
 ]

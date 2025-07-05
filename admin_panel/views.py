@@ -120,3 +120,14 @@ class DailyWagePartialUpdateView(generics.UpdateAPIView):
     serializer_class = DailyWagePatchSerializer
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['patch']
+
+class CateringWorkCreateView(generics.CreateAPIView):
+    queryset = CateringWork.objects.all()
+    serializer_class = CateringWorkSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class CateringWorkUpdateView(generics.UpdateAPIView):
+    queryset = CateringWork.objects.all()
+    serializer_class = CateringWorkSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['patch', 'put']
