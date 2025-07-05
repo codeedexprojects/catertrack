@@ -139,3 +139,15 @@ class UserUpdateView(generics.UpdateAPIView):
             'status': False,
             'errors': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
+    
+class AdminUserListView(generics.ListAPIView):
+    queryset = User.objects.all().select_related('staff_details')
+    serializer_class = AdminUserListSerializer
+    permission_classes = [IsAdmin]
+
+
+class AdminUserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminUserUpdateSerializer
+    permission_classes = [IsAdmin]
+    lookup_field = 'id'
