@@ -19,7 +19,7 @@ def get_tokens_for_user(user):
 
 
 class createuserview(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         serializer = UserSignupSerializer(data=request.data)
