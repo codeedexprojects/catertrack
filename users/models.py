@@ -5,7 +5,7 @@ USER_ROLES = (
     ('admin', 'Admin'),
     ('subadmin', 'Subadmin/Captain'),
     ('supervisor', 'Supervisor'),
-    ('vice_supervisor', 'Vice Supervisor'),
+    ('head_boy', 'Head_boy'),
     ('boys', 'Boys'),
 )
 
