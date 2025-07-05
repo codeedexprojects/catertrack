@@ -64,4 +64,38 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = ['user_name', 'email', 'mobile_number']
         read_only_fields = ['email']
 
- 
+class StaffDetailsSerializerAdmin(serializers.ModelSerializer):
+    class Meta:
+        model = StaffDetails
+        exclude = ['id', 'user', 'created_at', 'updated_at']
+
+class AdminUserListSerializer(serializers.ModelSerializer):
+    staff_details = StaffDetailsSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'user_name', 'mobile_number', 'role', 'is_active', 'is_approved', 'staff_details']
+
+class AdminUserUpdateSerializer(serializers.ModelSerializer):
+    staff_details = StaffDetailsSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = ['email', 'user_name', 'mobile_number', 'role', 'is_active', 'is_approved', 'staff_details']
+
+    def update(self, instance, validated_data):
+        staff_data = validated_data.pop('staff_details', None)
+
+        # Update user fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Update staff details if present
+        if staff_data:
+            staff_details, created = StaffDetails.objects.get_or_create(user=instance)
+            for attr, value in staff_data.items():
+                setattr(staff_details, attr, value)
+            staff_details.save()
+
+        return instance
