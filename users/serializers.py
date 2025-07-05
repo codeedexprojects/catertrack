@@ -81,21 +81,33 @@ class AdminUserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'user_name', 'mobile_number', 'role', 'is_active', 'is_approved', 'staff_details']
+        fields = [
+            'email',
+            'user_name',
+            'mobile_number',
+            'role',
+            'is_active',
+            'is_approved',
+            'staff_details',
+        ]
+
+    def validate_mobile_number(self, value):
+        user_id = self.instance.id if self.instance else None
+        if User.objects.exclude(id=user_id).filter(mobile_number=value).exists():
+            raise serializers.ValidationError("Mobile number is already in use.")
+        return value
 
     def update(self, instance, validated_data):
         staff_data = validated_data.pop('staff_details', None)
 
-        # Update user fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
-        # Update staff details if present
-        if staff_data:
-            staff_details, created = StaffDetails.objects.get_or_create(user=instance)
+        if staff_data and hasattr(instance, 'staff_details'):
+            staff_instance = instance.staff_details
             for attr, value in staff_data.items():
-                setattr(staff_details, attr, value)
-            staff_details.save()
+                setattr(staff_instance, attr, value)
+            staff_instance.save()
 
         return instance
