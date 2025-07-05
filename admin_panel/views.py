@@ -98,3 +98,25 @@ class BaseFareUpdateView(generics.UpdateAPIView):
                 'status': False,
                 'message': 'Base fare not found for update.'
             }, status=status.HTTP_404_NOT_FOUND)
+        
+class BoyRatingCreateView(generics.CreateAPIView):
+    queryset = BoyRating.objects.all()
+    serializer_class = BoyRatingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class BoyRatingPartialUpdateView(generics.UpdateAPIView):
+    queryset = BoyRating.objects.all()
+    serializer_class = BoyRatingPatchSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['patch']  
+
+class DailyWageCreateView(generics.CreateAPIView):
+    queryset = DailyWage.objects.all()
+    serializer_class = DailyWageCreateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class DailyWagePartialUpdateView(generics.UpdateAPIView):
+    queryset = DailyWage.objects.all()
+    serializer_class = DailyWagePatchSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['patch']
